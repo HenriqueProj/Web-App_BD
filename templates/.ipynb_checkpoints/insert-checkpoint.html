@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <style>
+  .description {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+  }
+  .price {
+      font-weight: bold;
+      font-size: 1.0em; 
+  }
+  .description h4 {
+      color: #1f32ad;
+  }
+  </style>  
+
+{% endblock %}
+
+{% block content %}
+    <article class="post">
+        <div class = "description">
+        {% if type == "order" %}
+              <span class="price">Numero de Customer:</span>
+            <form action="{{ url_for('show_customer_orders') }}" method="post">
+          <input type="number" name="cust_no_form">
+          <input type="submit" value="Submit">
+</form>
+        {% endif %}
+      </div>
+    </article>
+    <hr>
+</div>
+
+{% endblock %}
