@@ -30,10 +30,9 @@
 
 {% block content %}
   {% if type == "customer" %}
-<h1> HWY</h1>
-      <form action="{{ url_for('add_customer') }}" method="post">
+  <form action="{{ url_for('add_customer') }}" method="post">
       <input type="submit" value="Adicionar Novo Cliente">
-      </form>
+  </form>
   {% endif %}
   {% for item in list %}
     <article class="post">

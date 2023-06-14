@@ -52,6 +52,8 @@ def redirect_page():
     if option == 'list_products':
         return redirect("/products")
     # Add more conditions for other options if needed
+    elif option == 'list_customers':
+        return redirect("/customers")
     else:
         return redirect("/")
 
@@ -78,7 +80,7 @@ def list_products():
     ):
         return jsonify(products)
 
-    return render_template("products/list.html", list = products)
+    return render_template("list.html", type = "product", list = products)
 
 
 @app.route("/products/<sku>/edit", methods=("GET", "POST"))
@@ -106,7 +108,7 @@ def edit_product(sku):
             error = "Price is required."
             if not price.isnumeric():
                 error = "Price should be a number."
-        
+
         if not description:
             error = "Description is required."
             if not description.isalpha():
@@ -130,3 +132,33 @@ def edit_product(sku):
             return redirect(url_for("list_products"))
 
     return render_template("products/edit.html", product = product)
+
+
+@app.route("/customers", methods=("GET",))
+def list_customers():
+    """Show all customers"""
+
+    with pool.connection() as conn:
+        with conn.cursor(row_factory=namedtuple_row) as cur:
+            customers = cur.execute(
+                """
+                SELECT name, email, address, phone
+                FROM customer
+                ORDER BY name;
+                """,
+                {},
+            ).fetchall()
+            log.debug(f"Found {cur.rowcount} rows.")
+
+    # API-like response is returned to clients that request JSON explicitly (e.g., fetch)
+    if (
+        request.accept_mimetypes["application/json"]
+        and not request.accept_mimetypes["text/html"]
+    ):
+        return jsonify(customers)
+
+    return render_template("list.html", type = "customer", list = customers)
+
+@app.route("/customers/add", methods=("GET",))
+def add_customer():
+    return 1
