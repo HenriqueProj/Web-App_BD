@@ -1,12 +1,16 @@
 <!doctype html>
-<title>{% block title %}{% endblock %} - Bank</title>
+<title>{% block title %}{% endblock %} - Projeto de Base de Dados</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<nav>
-  <h1><a href="/">Bank</a></h1>
-  <ul>
-    <li><a href="{{ url_for('account_index') }}">Accounts</a>
+
+<nav class="navbar navbar-inverse">
+  <h1><a href="/">Projeto de Base de Dados</a></h1>
+  <div class="container-fluid">
+      <ul class="nav navbar-nav">
+      <li class="active"><a href= "{{ url_for('homepage') }}">Home</a></li>
+      <li><a href="{{ url_for('list_products') }}">Editar Produtos</a>
     </ul>
-  </nav>
+  </div>
+</nav>
   <section class="content">
     <header>
       {% block header %}{% endblock %}

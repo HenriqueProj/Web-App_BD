@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <style>
+  .description {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+  }
+  .price {
+      font-weight: bold;
+      font-size: 1.0em; 
+  }
+  .description h4 {
+      color: #1f32ad;
+  }
+  </style>
+  <h1>{% block title %}Produtos{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  {% for item in list %}
+    <article class="post">
+      <header>
+        <div>
+          <h1>{{ item[0]}}</h1>
+        </div>
+        <a class="action" href="{{ url_for('edit_product', sku=item[3]) }}">Editar</a>
+      </header>
+        <div class = "description">
+              <h4> {{ item[1] }}</h4>
+              <span class="price">{{ item[2] }} €</span>
+          </div>
+    </article>
+    {% if not loop.last %}
+    <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}

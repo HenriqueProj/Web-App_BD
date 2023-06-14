@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-import os
 from logging.config import dictConfig
 
 import psycopg
@@ -15,7 +14,7 @@ from psycopg_pool import ConnectionPool
 
 
 # postgres://{user}:{password}@{hostname}:{port}/{database-name}
-DATABASE_URL = os.environ.get("DATABASE_URL", "postgres://db:db@postgres/db")
+DATABASE_URL = "postgres://db:db@postgres/db"
 
 pool = ConnectionPool(conninfo=DATABASE_URL)
 # the pool starts connecting immediately.
@@ -44,17 +43,29 @@ log = app.logger
 
 
 @app.route("/", methods=("GET",))
-@app.route("/accounts", methods=("GET",))
-def account_index():
-    """Show all the accounts, most recent first."""
+def homepage():
+    return render_template("index.html")
+
+@app.route("/redirect", methods=("GET",))
+def redirect_page():
+    option = request.args.get('option')
+    if option == 'list_products':
+        return redirect("/products")
+    # Add more conditions for other options if needed
+    else:
+        return redirect("/")
+
+@app.route("/products", methods=("GET",))
+def list_products():
+    """Show all products"""
 
     with pool.connection() as conn:
         with conn.cursor(row_factory=namedtuple_row) as cur:
-            accounts = cur.execute(
+            products = cur.execute(
                 """
-                SELECT account_number, branch_name, balance
-                FROM account
-                ORDER BY account_number DESC;
+                SELECT name, description, price, SKU
+                FROM product
+                ORDER BY name;
                 """,
                 {},
             ).fetchall()
@@ -65,36 +76,41 @@ def account_index():
         request.accept_mimetypes["application/json"]
         and not request.accept_mimetypes["text/html"]
     ):
-        return jsonify(accounts)
+        return jsonify(products)
 
-    return render_template("account/index.html", accounts=accounts)
+    return render_template("products/list.html", list = products)
 
 
-@app.route("/accounts/<account_number>/update", methods=("GET", "POST"))
-def account_update(account_number):
-    """Update the account balance."""
-
+@app.route("/products/<sku>/edit", methods=("GET", "POST"))
+def edit_product(sku):
+    """Edit Product name and description"""
     with pool.connection() as conn:
         with conn.cursor(row_factory=namedtuple_row) as cur:
-            account = cur.execute(
+            product = cur.execute(
                 """
-                SELECT account_number, branch_name, balance
-                FROM account
-                WHERE account_number = %(account_number)s;
+                SELECT name, description, price, SKU
+                FROM product
+                WHERE SKU = %(sku)s;
                 """,
-                {"account_number": account_number},
+                {"sku": sku},
             ).fetchone()
             log.debug(f"Found {cur.rowcount} rows.")
 
     if request.method == "POST":
-        balance = request.form["balance"]
+        price = request.form["product_price"]
+        description = request.form["product_description"]
 
         error = None
 
-        if not balance:
-            error = "Balance is required."
-            if not balance.isnumeric():
-                error = "Balance is required to be numeric."
+        if not price:
+            error = "Price is required."
+            if not price.isnumeric():
+                error = "Price should be a number."
+        
+        if not description:
+            error = "Description is required."
+            if not description.isalpha():
+                error = "Description should be a string."
 
         if error is not None:
             flash(error)
@@ -103,40 +119,14 @@ def account_update(account_number):
                 with conn.cursor(row_factory=namedtuple_row) as cur:
                     cur.execute(
                         """
-                        UPDATE account
-                        SET balance = %(balance)s
-                        WHERE account_number = %(account_number)s;
+                        UPDATE product
+                        SET price = %(price)s,
+                            description = %(description)s
+                        WHERE SKU = %(sku)s;
                         """,
-                        {"account_number": account_number, "balance": balance},
+                        {"price": price ,"description": description, "sku": sku},
                     )
                 conn.commit()
-            return redirect(url_for("account_index"))
+            return redirect(url_for("list_products"))
 
-    return render_template("account/update.html", account=account)
-
-
-@app.route("/accounts/<account_number>/delete", methods=("POST",))
-def account_delete(account_number):
-    """Delete the account."""
-
-    with pool.connection() as conn:
-        with conn.cursor(row_factory=namedtuple_row) as cur:
-            cur.execute(
-                """
-                DELETE FROM account
-                WHERE account_number = %(account_number)s;
-                """,
-                {"account_number": account_number},
-            )
-        conn.commit()
-    return redirect(url_for("account_index"))
-
-
-@app.route("/ping", methods=("GET",))
-def ping():
-    log.debug("ping!")
-    return jsonify({"message": "pong!", "status": "success"})
-
-
-if __name__ == "__main__":
-    app.run()
+    return render_template("products/edit.html", product = product)
