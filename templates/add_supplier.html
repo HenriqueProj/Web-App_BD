@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Fornecedores{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="TIN">TIN</label>
+    <input name="TIN" id="TIN" type="text" value="{{request.form['TIN'] }}" required>
+      <label for="name">Nome</label>
+    <input name="supplier_name" id="supplier_name" type="text" value="{{request.form['name'] }}" required>
+      <label for="address">Morada</label>
+    <input name="address" id="address" type="text" value="{{request.form['address'] }}" required>
+    <label for="SKU">SKU</label>
+    <input name="SKU" id="SKU" type="text" value="{{request.form['price'] }}">
+      <label for="date">Data de Contrato</label>
+      <input name="date" id="date"  type="date" value="{{request.form['date'] }}">
+    <input type="submit" value="Adicionar">
+  </form>
+{% endblock %}

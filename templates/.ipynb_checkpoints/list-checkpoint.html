@@ -1,73 +1,140 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <style>
+<style>
   .description {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
+
   .price {
-      font-weight: bold;
-      font-size: 1.0em; 
+    font-weight: bold;
+    font-size: 1.0em;
+    color:#333333
   }
+
   .description h4 {
-      color: #1f32ad;
+      color: #2d43d2;
   }
-  </style>  
-    
-  <h1>
+      .product_name{
+          color: #000ca3;
+      }
+    .button{
+        width:210px;
+        padding:5px;
+    }
+</style>
+
+<h1>
   {% block title %}
   {% if type == "product" %}
       Produtos
   {% elif type == "order"%}
-      Orders
-    {%else%}
+      Encomendas
+  {% elif type == "supplier" %}
+      Fornecedores
+  {% else %}
       Clientes
   {% endif %}
   {% endblock %}
-  </h1>
+</h1>
 
 {% endblock %}
 
 {% block content %}
-  {% if type == "customer" %}
-  <form action="{{ url_for('add_customer') }}" method="post">
-      <input type="submit" value="Adicionar Novo Cliente">
-  </form>
+
+    {% if type == "customer" %}
+        <form action="{{ url_for('add_customer') }}" method="get">
+          <button class="button" type="submit">Adicionar Novo Cliente</button>
+        </form>
+    {% elif type == "supplier" %}
+        <form action="{{ url_for('add_supplier') }}" method="get">
+          <button class="button" type="submit">Adicionar Novo Fornecedor</button>
+        </form>
+    {% elif type == "product" and purpose == "insert_remove" %}
+        <form action="{{ url_for('add_product') }}" method="get">
+          <button class="button" type="submit">Adicionar Novo Produto</button>
+        </form>
+   {% endif %}
+
+  {% if type == "product" and purpose == "make_order" %}
+      <form action="{{ url_for('new_order', cust_no = cust_no)}}" method="post">
   {% endif %}
-
-
+          
   {% for item in list %}
-    <article class="post">
-      <header>
-        <div>
-          {% if type == "order" %}
-            <h1>Order Number {{ item[0]}}</h1>
-          {% else %}
-              <h1>{{ item[0]}}</h1>
-          {% endif %}
-        </div>
-        {% if type == "product" %}
-        <a class="action" href="{{ url_for('edit_product', sku=item[3]) }}">Editar</a>
+  <article class="post">
+    <header>
         
-        {% elif type == "order" %}
-          <a class="action" href="{{ url_for('pay_delivery', order_no=item[0]) }}">Pagar</a>
-        {% endif %}
-      </header>
-        <div class = "description">
-        {% if type == "product" %}
-              <h4> {{ item[1] }}</h4>
-              <span class="price">{{ item[2] }} €</span>
-        {% elif type == "order" %}
-              <span class="price">Customer {{ item[1] }}</span>
+      <div>
+        {% if type == "order" %}
+          <h1 class="product_name">Ordem nº {{ item[0]}} <br> Valor Total: {{item[2]}}€</h1>
+           
         {% else %}
-              <h4> E-mail: {{ item[1] }} <br> Morada: {{ item[2] }} <br> Telemóvel: {{ item[3] }}</h4>
+            <h1>{{ item[0]}}</h1>
         {% endif %}
-        </div>
-    </article>
-    {% if not loop.last %}
-    <hr>
-    {% endif %}
+      </div>
+        
+      {% if type == "product" %}
+          {% if purpose == "edit"%}
+              <a class="action" href="{{ url_for('edit_product', sku=item[3]) }}">Editar</a>
+          {% elif purpose == "make_order"%}
+              <label for="product_price_{{ item[3] }}">Quantidade</label>
+              <input name="product_price_{{ item[3] }}" id="product_price_{{ item[3] }}" 
+              type="number" min="0" step="1" placeholder="0" value="{{ request.form['product_price_' ~ item[3]] }}">
+          {% endif %}
+        
+      {% elif type == "order" %}
+          <a class="action" href="{{ url_for('pay_delivery', order_no=item[0]) }}">Pagar</a>
+        remove
+      {% endif %}
+        
+    </header>
+      
+    <div class="description">
+      {%if type == "supplier"%}
+          
+          <h4 class="product_name">{{ item[1] }}</h4>
+          <span class="address">{{ item[2] }} </span>
+          <span class="date">{{ item[4] }} </span>
+          <form action="{{ url_for('supplier_remove', supplier_number= item[0]) }}" method="post">
+              <input class="danger" type="submit" value="Remove" onclick="return confirm('Tem a certeza?');">
+          </form>
+        
+      {% elif type == "product" %}
+        
+      <h4>{{ item[1] }}</h4>
+      <span class="price">{{ item[2] }} €</span>
+          {% if purpose == "insert_remove" %}
+              <form action="{{ url_for('product_remove', SKU= item[3]) }}" method="post">
+                 <input class="danger" type="submit" value="Remove" onclick="return confirm('Tem a certeza?');">
+              </form>
+          {% endif %}
+        
+      {% elif type == "order" %}
+          <span class="price">Customer {{ item[1] }}</span>
+        
+      {% else %}
+          <h4>E-mail: {{ item[1] }} <br> Morada: {{ item[2] }} <br> Telemóvel: {{ item[3] }}</h4>
+          <form action="{{ url_for('delete_customer', cust_no=item[4]) }}" method="post">
+            <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+          </form>
+        
+      {% endif %}
+        
+    </div>
+      
+  </article>
+          
+  {% if not loop.last %}
+      <hr>
+  {% endif %}
+      
   {% endfor %}
+          
+  {% if type == "product" and purpose == "make_order" %}
+  
+          <input type="submit" value="Confirmar Encomenda">
+      </form>
+  {% endif %}
 {% endblock %}

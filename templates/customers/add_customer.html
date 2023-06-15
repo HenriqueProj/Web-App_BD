@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Adicionar Cliente{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="name">Nome</label>
+    <input name="name" id="name" type="text" value="{{request.form['name'] }}" required>
+      <label for="email">Email</label>
+    <input name="email" id="email" type="text" value="{{request.form['email'] }}" required>
+      <label for="address">Morada</label>
+    <input name="address" id="address" type="text" value="{{request.form['address'] }}" required>
+    <label for="phone">Nº de Telemóvel</label>
+    <input name="phone" id="phone" type="text" maxlength="9" value="{{request.form['phone'] }}" required>
+    <input type="submit" value="Adicionar">
+  </form>
+{% endblock %}

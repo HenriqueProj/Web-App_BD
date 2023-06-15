@@ -2,15 +2,33 @@
 <title>{% block title %}{% endblock %} - Projeto de Base de Dados</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
+<style>
+  .nav{
+      padding: 3px;
+  }
+  .titulo{
+      font-size: 22px;
+      font-weight: bold;
+  }
+  .header{
+      margin-right: 5px;
+      font-size: 14px;
+  }
+  
+</style>
+
 <nav class="navbar navbar-inverse">
-  <h1><a href="/">Projeto de Base de Dados</a></h1>
+  <h1><a  class="titulo" href="/">Projeto de Base de Dados</a></h1>
   <div class="container-fluid">
       <ul class="nav navbar-nav">
-      <li class="active"><a href= "{{ url_for('homepage') }}">Home</a></li>
-      <li><a href="{{ url_for('list_products') }}">Editar Produtos</a>
-      <li><a href="{{url_for('list_customers')}}"> Registar/Remover Clientes</a>
-          <li><a href="{{url_for('select_cust_no')}}"> Pagar Encomenda</a>
-    </ul>
+          <li class="header"><a href= "{{ url_for('homepage') }}">Home</a></li>
+          <li><a class="header" href="{{url_for('list_products', purpose = 'insert_remove')}}"> Registar/Remover Produtos</a></li>
+          <li><a class="header" href="{{ url_for('list_suppliers') }}">Registar/Remover Fornecedores</a></li>
+          <li><a class="header" href="{{ url_for('list_products', purpose = 'edit') }}">Editar Produtos</a></li>
+          <li><a class="header" href="{{url_for('list_customers')}}"> Registar/Remover Clientes</a></li>
+          <li><a class="header" href="{{url_for('get_cust_no_for_order', purpose = 'make_order')}}"> Efetuar Uma Encomenda</a></li>
+          <li><a class="header" href="{{url_for('select_cust_no')}}"> Pagar Encomenda</a></li>
+      </ul>
   </div>
 </nav>
   <section class="content">

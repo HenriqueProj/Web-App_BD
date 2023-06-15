@@ -14,6 +14,16 @@
   .description h4 {
       color: #1f32ad;
   }
+
+  .form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input_number, .button {
+  margin-top: 3px;
+}
   </style>  
 
 {% endblock %}
@@ -21,16 +31,21 @@
 {% block content %}
     <article class="post">
         <div class = "description">
-        {% if type == "order" %}
-              <span class="price">Numero de Customer:</span>
+        {% if type == "order" and purpose == "show_orders"%}
+              <span class="price">Número de Cliente:</span>
             <form action="{{ url_for('show_customer_orders') }}" method="post">
-          <input type="number" name="cust_no_form">
-          <input type="submit" value="Submit">
-</form>
+          <input class="input_number" type="number" name="cust_no_form">
+          <input class="button" type="submit" value="Pagar">
+            </form>
+        {% else %}
+          <span class="price">Número de Cliente:</span>
+            <form action="{{ url_for('read_cust_no') }}" method="post">
+              <input class="input_number" type="number" name="cust_no_form" step="1" min="1" pattern="\d+" required>
+              <input class="button" type="submit" value="Pagar">
+    </form>
         {% endif %}
       </div>
     </article>
     <hr>
-</div>
 
 {% endblock %}
