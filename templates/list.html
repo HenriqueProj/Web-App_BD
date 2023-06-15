@@ -13,17 +13,45 @@
     font-size: 1.0em;
     color:#333333
   }
-
   .description h4 {
-      color: #2d43d2;
+      color: #ffffff;
   }
       .product_name{
-          color: #000ca3;
+          color: #ffffff;
       }
     .button{
         width:210px;
         padding:5px;
     }
+    
+    .address, .price{
+        color: #ffffff;
+    }
+    
+    .input-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .input-container label {
+    margin-bottom: 5px;
+  }
+   .flex-container {
+    display: flex;
+  flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-start;
+    flex-grow: 1; /* Added this line to allow flex-container to grow */
+  }
+
+  .Quantity {
+    margin-right: 20px;
+    display: inline-block;
+      
+    margin-bottom: 5px;
+  }
+
+    
 </style>
 
 <h1>
@@ -64,14 +92,17 @@
           
   {% for item in list %}
   <article class="post">
-    <header>
         
       <div>
         {% if type == "order" %}
-          <h1 class="product_name">Ordem nº {{ item[0]}} <br> Valor Total: {{item[2]}}€</h1>
+          <h1 class="product_name">Ordem nº{{ item[0]}} <br> Valor Total: {{item[2]}}€</h1>
            
-        {% else %}
+        {% elif type == "supplier" %}
+            <h1>TIN: {{ item[0]}}</h1>
+        {% elif purpose=="make_order" %}
             <h1>{{ item[0]}}</h1>
+          {%else%}
+              <h1>{{ item[0]}}</h1>
         {% endif %}
       </div>
         
@@ -79,32 +110,34 @@
           {% if purpose == "edit"%}
               <a class="action" href="{{ url_for('edit_product', sku=item[3]) }}">Editar</a>
           {% elif purpose == "make_order"%}
-              <label for="product_price_{{ item[3] }}">Quantidade</label>
-              <input name="product_price_{{ item[3] }}" id="product_price_{{ item[3] }}" 
-              type="number" min="0" step="1" placeholder="0" value="{{ request.form['product_price_' ~ item[3]] }}">
+        <div class="flex-container">
+            <div class="Quantity">
+              <label class="price" for="product_price_{{ item[3] }}">Quantidade</label>
+        </div>
+              <div class="input-container">
+  <input class="input_number" name="product_price_{{ item[3] }}" id="product_price_{{ item[3] }}" 
+    type="number" min="0" step="1" placeholder="0" value="{{ request.form['product_price_' ~ item[3]] }}">
+</div>
+            </div>
           {% endif %}
         
       {% elif type == "order" %}
           <a class="action" href="{{ url_for('pay_delivery', order_no=item[0]) }}">Pagar</a>
-        remove
       {% endif %}
         
-    </header>
       
     <div class="description">
       {%if type == "supplier"%}
           
-          <h4 class="product_name">{{ item[1] }}</h4>
-          <span class="address">{{ item[2] }} </span>
-          <span class="date">{{ item[4] }} </span>
+          <h4 class="product_name">Nome: {{ item[1] }}<br>
+          Morada: {{ item[2] }}<br>Data de contrato: {{ item[3] }} </h4>
           <form action="{{ url_for('supplier_remove', supplier_number= item[0]) }}" method="post">
               <input class="danger" type="submit" value="Remove" onclick="return confirm('Tem a certeza?');">
           </form>
         
       {% elif type == "product" %}
         
-      <h4>{{ item[1] }}</h4>
-      <span class="price">{{ item[2] }} €</span>
+      <h4>Descrição: {{ item[1] }}<br>Preço: {{ item[2] }} €</h4>
           {% if purpose == "insert_remove" %}
               <form action="{{ url_for('product_remove', SKU= item[3]) }}" method="post">
                  <input class="danger" type="submit" value="Remove" onclick="return confirm('Tem a certeza?');">

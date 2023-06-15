@@ -2,50 +2,57 @@
 
 {% block header %}
   <style>
-  .description {
+    .description {
       display: flex;
       align-items: center;
       justify-content: space-between;
-  }
-  .price {
+    }
+    .price {
+      white-space: nowrap;
       font-weight: bold;
       font-size: 1.0em; 
-  }
-  .description h4 {
+      margin-right: 20px;
+    }
+    .description h4 {
       color: #1f32ad;
-  }
+    }
 
-  .form-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+    .form-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-.input_number, .button {
-  margin-top: 3px;
-}
+    .button {
+      margin-top: 3px;
+    }
+
+    .upper {
+      display: flex;
+      align-items: center;
+    }
   </style>  
-
 {% endblock %}
 
 {% block content %}
-    <article class="post">
-        <div class = "description">
-        {% if type == "order" and purpose == "show_orders"%}
-              <span class="price">Número de Cliente:</span>
-            <form action="{{ url_for('show_customer_orders') }}" method="post">
-          <input class="input_number" type="number" name="cust_no_form">
-          <input class="button" type="submit" value="Pagar">
-            </form>
+  <article class="post">
+    <div class="description">
+      <div class="upper">
+        {% if type == "order" and purpose == "show_orders" %}
+          <span class="price">Número de Cliente:</span>
+          <form action="{{ url_for('show_customer_orders') }}" method="post">
+            <input class="input_number" type="number" name="cust_no_form">
         {% else %}
           <span class="price">Número de Cliente:</span>
-            <form action="{{ url_for('read_cust_no') }}" method="post">
-              <input class="input_number" type="number" name="cust_no_form" step="1" min="1" pattern="\d+" required>
-              <input class="button" type="submit" value="Pagar">
-    </form>
+          <form action="{{ url_for('read_cust_no') }}" method="post">
+            <input class="input_number" type="number" name="cust_no_form" step="1" min="1" pattern="\d+" required>
         {% endif %}
+      </div> <!-- Close the upper div here -->
+      <div class="button-container">
+        <input class="button" type="submit" value="Confirmar">
       </div>
-    </article>
-    <hr>
-
+      </form>
+    </div>
+  </article>
+  <hr>
 {% endblock %}
