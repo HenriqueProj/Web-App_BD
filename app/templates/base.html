@@ -11,14 +11,19 @@
   }
   
   .titulo {
-    font-size: 19px;
+      color:#ad9040;
+      font-weight:bold;
+    font-size: 20px;
     font-weight: bold;
     white-space: nowrap;
+      margin-right:20 px;
   }
   
   .header {
-    margin-right: 5px;
-    font-size: 13px;
+      color:#ad9040;
+      font-weight:bold;
+    margin-left: 2px;
+    font-size: 12px;
     width: 100%;
       
       .navbar navbar-inverse{
@@ -29,7 +34,7 @@
 </style>
 
 <nav class="navbar navbar-inverse">
-  <h1><a class="titulo" href="/">Bases de Dados</a></h1>
+  <h1><a class="titulo" href="/home">Bases de Dados</a></h1>
   <div class="container-fluid">
       <ul class="nav navbar-nav">
           <li><a class="header" href="{{url_for('list_products', purpose = 'insert_remove')}}"> Registar/Remover Produtos</a></li>

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+  <h1>{% block title %}Home{% endblock %}</h1>
+{% block header %}
+<style>
+.container {
+  display: flex;
+  justify-content: center;
+  margin-top:15px;
+  align-items: center;
+}
+
+.container h2 {
+  text-align: center;
+}
+    
+.dropdown-menu {
+  display: inline-block;
+  font-size: 20px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor : pointer;
+  color: #fff;
+  text-align: center;
+  /* Add some color */
+  background-color:  #ad9040;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+}
+
+.dropdown-menu option {
+  background-color:  #ad9040;
+  color: #fff;
+  font-weight: bold;
+    font-size:17px;
+    margin-bottom:20px;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+    <form action="{{ url_for('redirect_page') }}" method="get">
+    <div class="container">
+    <h2 class="text-center"> Escolha uma funcionalidade </h2>
+    </div>
+    <br>
+    <div class="container">
+  <select name="option" class="dropdown-menu">
+    <option value="list_products_insert_remove">Registar/Remover Produtos</option>
+    <option value="list_suppliers">Registar/Remover Fornecedores</option>
+    <option value="list_products_edit">Editar Produtos</option>
+    <option value="list_customers">Registar/Remover Clientes</option>
+    <option value="list_product_make_order">Efetuar uma encomenda</option>
+    <option value="pay_order">Efetuar Pagamento</option>
+  </select>
+</div>
+
+    <br>
+    <div class = "container">
+    <input class="button" type="submit" value="Confirmar">
+    </div>
+    </form>
+{% endblock %}

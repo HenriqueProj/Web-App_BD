@@ -1,0 +1,51 @@
+{% block title %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<style>
+    .container {
+    display: grid;
+    grid-template-columns: 1fr 14 fr; /* Updated grid template columns */
+  }
+  
+  .titles {
+    grid-column: 1 / span 1;
+  }
+  
+  .form-group {
+    grid-column: 2 / span 14; 
+  }
+    .button{
+        width:150px;
+    }
+
+</style>
+
+{% endblock %}
+
+{% block header %}
+<nav class="navbar navbar-inverse">
+  <h1><a href="/">Projeto de Base de Dados</a></h1>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1>Login</h1>
+    <div class="titles">
+        <br><a class="user" for="username"><b>Nome de Utilizador</b></a><br><br>
+        <a for="password"><b>Password</b></a>
+      </div>
+      
+    <div class="form-group">
+        <form action="" method="POST">
+    {% if error %}
+    <p class="error-message">{{ error }}</p>
+    {% endif %}
+            
+      <br><input type="text" placeholder="Enter your username" name="username" required><br><br>
+      <input type="password" placeholder="Enter your password" name="password" required>
+            </div>
+</div>
+<br><button class="button" type="submit">Login</button>
+</form>
+{% endblock %}

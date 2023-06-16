@@ -2,6 +2,11 @@
 
 {% block header %}
   <h1>{% block title %}Adicionar Cliente{% endblock %}</h1>
+  <style>    
+      label{
+          color:#ffffff;
+       }
+  </style>
 {% endblock %}
 
 {% block content %}
@@ -11,9 +16,9 @@
       <label for="email">Email</label>
     <input name="email" id="email" type="text" value="{{request.form['email'] }}" required>
       <label for="address">Morada</label>
-    <input name="address" id="address" type="text" value="{{request.form['address'] }}" required>
+    <input name="address" id="address" type="text" value="{{request.form['address'] }}">
     <label for="phone">Nº de Telemóvel</label>
-    <input name="phone" id="phone" type="text" maxlength="9" value="{{request.form['phone'] }}" required>
+    <input name="phone" id="phone" type="text" maxlength="9" value="{{request.form['phone'] }}">
     <input type="submit" value="Adicionar">
   </form>
 {% endblock %}

@@ -1,52 +1,35 @@
 html {
-    font-family: "Open Sans", sans-serif;
-
-    background: #003249;
+    font-family: sans-serif;
+    background: #eee;
     padding: 1rem;
   }
 
   body {
     max-width: 960px;
     margin: 0 auto;
-    background: #22638c;
-      display: flex;
-    justify-content: center;
-    flex-direction: column;
-    padding: 20px;
+    background: white;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: "Open Sans", sans-serif;
-
-    color: #ffffff;
+    font-family: serif;
+    color: #377ba8;
     margin: 1rem 0;
   }
 
   a {
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 15px;
+    color: #377ba8;
   }
-  a:hover{
-    text-decoration: underline;
- }
 
   hr {
-    color:#ffffff
-    border-top: 2.0002px solid lightgray;
-    border-bottom: 2.0002px solid white;
+    border: none;
+    border-top: 1px solid lightgray;
   }
 
   nav {
-    background: #00416a;
+    background: lightgray;
     display: flex;
     align-items: center;
     padding: 0 0.5rem;
-      border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-      border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.1), 0px 2px 4px rgba(0, 0, 0, 0.1);  }
   }
 
   nav h1 {
@@ -149,53 +132,3 @@ box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.1), 0px 2px 4px rgba(0, 0, 0, 0.1);  }
     align-self: start;
     min-width: 10em;
   }
-
-  
-
-.dropdown_menu {
-  border-radius:3px;
-  padding: 2px;
-  
-}
-.dropdown_menu option {
-padding: 130px; 
-background-color: #ffffff;
-}
-
-.button{
-  cursor: pointer;
-  color: #ffffff;
-  background-color: #0d6eec;
-  border-color: #0d6efd;
-  font-weight: 400;
-  line-height: 1.5;
-  text-align: center;
-  border: 1px solid transparent;
-  padding: 6px 12px;
-  font-size: 16px;
-  border-radius: 17px;
-}
-
-.dropdown_container {
-width: 250px; /* Adjust the width as needed */
-position: relative;
-}
-
-.dropdown_menu {
-width: 100%;
-padding: 10px;
-font-size: 16px;
-border: 1px solid #ccc;
-border-radius: 2px;
-background-color: #fff;
-color: #333;
-}
-
-.input_number{
-  border-radius:3px;
-  padding:3px;
-  font-size:14px;
-  text-align:center;
-  background-color:#eeeeee;
-width:68.7px;
-}

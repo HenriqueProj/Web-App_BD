@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Adicionar Produto{% endblock %}</h1>
+
+    <style>
+        label{
+            color:#ffffff;
+        }
+        .button{
+            width:50px;
+        }
+        
+</style>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="SKU">SKU</label>
+    <input name="SKU" id="SKU" type="text" value="{{request.form['SKU'] }}" required>
+      <label for="name">Nome</label>
+    <input name="name" id="name" type="text" value="{{request.form['name'] }}" required>
+      <label for="description">Descrição</label>
+    <input name="description" id="description" type="text" value="{{request.form['description'] }}">
+    <label for="price">Preço</label>
+    <input name="price" id="price" type="number" min="0.01" step="0.01" placeholder="0.00" value="{{request.form['price'] }}" required>
+      <label for="EAN">EAN</label>
+      <input name="EAN" id="EAN"  type="number" min="0" value="{{request.form['EAN'] }}">
+    <input class="button" type="submit" value="Add">
+  </form>
+{% endblock %}

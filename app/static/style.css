@@ -162,8 +162,20 @@ padding: 130px;
 background-color: #ffffff;
 }
 
-.button{
+.button_right{
   cursor: pointer;
+  color: #FFFFFF !important;
+  background-color: #0d6eec;
+  text-align: center;
+  font-weight: bold;
+  padding: 7px 20px;
+  font-size: 13px;
+  border-radius: 7px;
+  border: 1px solid transparent;
+}
+
+.button{
+     cursor: pointer;
   color: #ffffff;
   background-color: #0d6eec;
   border-color: #0d6efd;
@@ -197,5 +209,18 @@ color: #333;
   font-size:14px;
   text-align:center;
   background-color:#eeeeee;
-width:68.7px;
+width:200px;
+}
+
+.danger {
+  cursor: pointer;
+  color: #FFFFFF !important;
+  background-color: #D60409;
+  text-align: center;
+  font-weight: bold;
+  padding: 7px 0px;
+  font-size: 13px;
+  border-radius: 7px;
+  border: 1px solid transparent;
+
 }

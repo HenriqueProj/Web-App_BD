@@ -20,8 +20,8 @@
           color: #ffffff;
       }
     .button{
-        width:210px;
-        padding:5px;
+  
+        padding: 7px 15px;
     }
     
     .address, .price{
@@ -93,10 +93,21 @@
   {% for item in list %}
   <article class="post">
         
-      <div>
+      <div class="description">
         {% if type == "order" %}
-          <h1 class="product_name">Ordem nº{{ item[0]}} <br> Valor Total: {{item[2]}}€</h1>
-           
+          
+          <h1 class="product_name">Ordem nº{{ item[0]}} <br> Valor Total: {{item[2]}}€<br>Customer {{ item[1] }}<br><br>
+          
+          {%if item[3] == 1%} 
+              {{item[3]}} Produto
+              {%else%}
+              {{item[3]}} Produtos
+              {%endif%}    
+          </h1>
+
+           <div style="display:flex;justify-content: flex-end;">
+          <a class="button" href="{{ url_for('pay_delivery', order_no=item[0]) }}">Pagar</a>
+          </div>
         {% elif type == "supplier" %}
             <h1>TIN: {{ item[0]}}</h1>
         {% elif purpose=="make_order" %}
@@ -105,24 +116,8 @@
               <h1>{{ item[0]}}</h1>
         {% endif %}
       </div>
-        
-      {% if type == "product" %}
-          {% if purpose == "edit"%}
-              <a class="action" href="{{ url_for('edit_product', sku=item[3]) }}">Editar</a>
-          {% elif purpose == "make_order"%}
-        <div class="flex-container">
-            <div class="Quantity">
-              <label class="price" for="product_price_{{ item[3] }}">Quantidade</label>
-        </div>
-              <div class="input-container">
-  <input class="input_number" name="product_price_{{ item[3] }}" id="product_price_{{ item[3] }}" 
-    type="number" min="0" step="1" placeholder="0" value="{{ request.form['product_price_' ~ item[3]] }}">
-</div>
-            </div>
-          {% endif %}
-        
-      {% elif type == "order" %}
-          <a class="action" href="{{ url_for('pay_delivery', order_no=item[0]) }}">Pagar</a>
+      {% if type == "order" %}
+      
       {% endif %}
         
       
@@ -138,19 +133,30 @@
       {% elif type == "product" %}
         
       <h4>Descrição: {{ item[1] }}<br>Preço: {{ item[2] }} €</h4>
+        {% if purpose == "edit"%}
+        <a class="button_right" href="{{ url_for('edit_product', sku=item[3]) }}">Editar</a>
+        {%endif%}
           {% if purpose == "insert_remove" %}
               <form action="{{ url_for('product_remove', SKU= item[3]) }}" method="post">
                  <input class="danger" type="submit" value="Remove" onclick="return confirm('Tem a certeza?');">
               </form>
+        
+        {% elif purpose == "make_order"%}
+        <div class="flex-container">
+            <div class="Quantity">
+              <label class="price" for="product_price_{{ item[3] }}">Quantidade</label>
+        </div>
+              <div class="input-container">
+  <input class="input_number" name="product_price_{{ item[3] }}" id="product_price_{{ item[3] }}" 
+    type="number" min="0" step="1" placeholder="0" value="{{ request.form['product_price_' ~ item[3]] }}">
+</div>
+            </div>
           {% endif %}
         
-      {% elif type == "order" %}
-          <span class="price">Customer {{ item[1] }}</span>
-        
-      {% else %}
+      {% elif type != "order" %}
           <h4>E-mail: {{ item[1] }} <br> Morada: {{ item[2] }} <br> Telemóvel: {{ item[3] }}</h4>
           <form action="{{ url_for('delete_customer', cust_no=item[4]) }}" method="post">
-            <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+            <input class="danger" type="submit" value="Remove" onclick="return confirm('Are you sure?');">
           </form>
         
       {% endif %}
@@ -166,8 +172,8 @@
   {% endfor %}
           
   {% if type == "product" and purpose == "make_order" %}
-  
-          <input type="submit" value="Confirmar Encomenda">
+          <br><br>
+          <input class="button" type="submit" value="Confirmar Encomenda">
       </form>
   {% endif %}
 {% endblock %}

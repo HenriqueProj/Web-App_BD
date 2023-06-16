@@ -2,6 +2,16 @@
 
 {% block header %}
   <h2>{% block title %}Produto {{ product[0] }} ({{product[2]}}€ / Unidade)  | Edição{% endblock %}</h2>
+
+<style>
+        label{
+            color:#ffffff;
+        }
+        .button{
+            width:50px;
+        }
+        
+</style>
 {% endblock %}
 
 {% block content %}
@@ -11,9 +21,9 @@
            value="{{ request.form['price'] or product[2] }}" required>
     <br>
     <label for="product_description">Descrição</label>
-    <input name="product_description" id="product_description" type="text" value="{{ request.form['description'] or product[1] }}" required>
+    <input name="product_description" id="product_description" type="text" value="{{ request.form['description'] or product[1] }}">
     <br>
-    <input type="submit" value="Guardar">
+    <input class="button" type="submit" value="Guardar">
   </form>
   <hr>
 
